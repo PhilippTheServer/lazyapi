@@ -6,8 +6,9 @@ from .init_generators import (
     ScaledReadmeGenerator,
     ScaledCoreConfigGenerator,
     ScaledMainAppGenerator,
-    ScaledDockerfileGenerator,
-    ScaledDockerComposeGenerator,
+    DockerfileGenerator,
+    DockerComposeGenerator,
+    EnvExampleGenerator,
 )
 
 
@@ -34,12 +35,12 @@ def get_scaled_fastapi_structure() -> ProjectStructure:
             # Root level
             FileSpec(path="README.md", generator=ScaledReadmeGenerator()),
             FileSpec(
-                path="docker-compose.dev.yml", generator=ScaledDockerComposeGenerator()
+                path="docker-compose.dev.yml", generator=DockerComposeGenerator()
             ),
-            FileSpec(path=".env.example", generator=empty_gen),
+            FileSpec(path=".env.example", generator=EnvExampleGenerator()),
             FileSpec(path=".gitignore", generator=empty_gen),
             # Source structure
-            FileSpec(path="src/Dockerfile", generator=ScaledDockerfileGenerator()),
+            FileSpec(path="src/Dockerfile", generator=DockerfileGenerator()),
             # App
             FileSpec(path="src/app/__init__.py", generator=empty_gen),
             FileSpec(path="src/app/main.py", generator=ScaledMainAppGenerator()),

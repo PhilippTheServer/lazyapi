@@ -31,13 +31,14 @@ class ProjectInitializer:
         self._shell_exec = shell_exec
         self._structure = structure
 
-    def initialize(self, project_path: Path, project_name: str) -> None:
+    def initialize(self, project_path: Path, project_name: str, is_scaled: bool = False) -> None:
         """
         Initialize a new FastAPI project.
 
         Args:
             project_path: Path where project should be created
             project_name: Name of the project
+            is_scaled: Whether to use scaled structure (affects template generation)
 
         Raises:
             LazyAPIError: If initialization fails
@@ -50,7 +51,11 @@ class ProjectInitializer:
                 self._file_ops.create_directory(project_path / dir_spec.path)
 
             # Generate and write all files
-            context = {"project_name": project_name}
+            context = {
+                "project_name": project_name,
+                "service_name": project_name,
+                "is_scaled": is_scaled
+            }
             for file_spec in self._structure.files:
                 content = file_spec.generator.generate(context)
                 self._file_ops.write_file(project_path / file_spec.path, content)

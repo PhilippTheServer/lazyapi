@@ -91,7 +91,7 @@ def init(
             get_scaled_fastapi_structure() if use_scaled else get_fastapi_structure()
         )
         ProjectInitializer(file_ops, shell_exec, structure).initialize(
-            Path.cwd() / name, name
+            Path.cwd() / name, name, use_scaled
         )
 
         typer.echo(f"✓ Successfully created {structure_type} project '{name}'")
