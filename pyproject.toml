@@ -1,7 +1,20 @@
 [project]
 name = "lazyapi"
 version = "0.1.0"
-description = "Add your description here"
+description = "A CLI tool for scaffolding FastAPI projects"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "click>=8.1.0",
+    "ruff>=0.14.7",
+]
+
+[project.scripts]
+lazyapi = "lazyapi.cli:cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lazyapi"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
