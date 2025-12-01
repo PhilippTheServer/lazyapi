@@ -34,9 +34,7 @@ def get_scaled_fastapi_structure() -> ProjectStructure:
         files=[
             # Root level
             FileSpec(path="README.md", generator=ScaledReadmeGenerator()),
-            FileSpec(
-                path="docker-compose.dev.yml", generator=DockerComposeGenerator()
-            ),
+            FileSpec(path="docker-compose.dev.yml", generator=DockerComposeGenerator()),
             FileSpec(path=".env.example", generator=EnvExampleGenerator()),
             FileSpec(path=".gitignore", generator=empty_gen),
             # Source structure

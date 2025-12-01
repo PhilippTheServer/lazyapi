@@ -1,7 +1,6 @@
 """FastAPI-specific content generators for repo-setup feature."""
 
 from pathlib import Path
-from typing import Dict, Any
 from ..shared.content_generators import FileTemplateGenerator
 
 
@@ -67,6 +66,3 @@ class ScaledMainAppGenerator(FileTemplateGenerator):
 
     def __init__(self):
         super().__init__(Path("main.scaled.py"))
-
-
-

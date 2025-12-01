@@ -95,9 +95,9 @@ class FileTemplateGenerator(IContentGenerator):
         """
         templates_dir = Path(__file__).parent.parent / "templates"
         template_file = templates_dir / self._template_path
-        
+
         if not template_file.exists():
             raise FileNotFoundError(f"Template file not found: {template_file}")
-        
+
         template_content = template_file.read_text()
         return template_content.format(**context)

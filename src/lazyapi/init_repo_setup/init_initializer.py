@@ -31,7 +31,9 @@ class ProjectInitializer:
         self._shell_exec = shell_exec
         self._structure = structure
 
-    def initialize(self, project_path: Path, project_name: str, is_scaled: bool = False) -> None:
+    def initialize(
+        self, project_path: Path, project_name: str, is_scaled: bool = False
+    ) -> None:
         """
         Initialize a new FastAPI project.
 
@@ -54,7 +56,7 @@ class ProjectInitializer:
             context = {
                 "project_name": project_name,
                 "service_name": project_name,
-                "is_scaled": is_scaled
+                "is_scaled": is_scaled,
             }
             for file_spec in self._structure.files:
                 content = file_spec.generator.generate(context)

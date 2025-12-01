@@ -29,9 +29,7 @@ def get_fastapi_structure() -> ProjectStructure:
             FileSpec(path="src/app/routes.py", generator=empty_gen),
             FileSpec(path="src/app/models.py", generator=empty_gen),
             FileSpec(path="src/Dockerfile", generator=DockerfileGenerator()),
-            FileSpec(
-                path="docker-compose.dev.yml", generator=DockerComposeGenerator()
-            ),
+            FileSpec(path="docker-compose.dev.yml", generator=DockerComposeGenerator()),
             FileSpec(path=".env.example", generator=EnvExampleGenerator()),
             FileSpec(path="README.md", generator=BasicReadmeGenerator()),
         ],
