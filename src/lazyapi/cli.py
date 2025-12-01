@@ -58,21 +58,24 @@ def init(
     file_ops = FileOperations()
     shell_exec = ShellExecutor()
 
-    # Validate
-    for validator in [
-        PrerequisiteValidator(["git", "uv"]),
-        ProjectNameValidator(),
-        ProjectPathValidator(file_ops),
-    ]:
-        if not validator.validate(
-            name
-            if isinstance(validator, ProjectNameValidator)
-            else Path.cwd() / name
-            if isinstance(validator, ProjectPathValidator)
-            else None
-        ):
-            typer.echo(f"Error: {validator.get_error_message()}", err=True)
-            raise typer.Exit(code=1)
+    # Validate prerequisites
+    prereq_validator = PrerequisiteValidator(["git", "uv"])
+    if not prereq_validator.validate():
+        typer.echo(f"Error: {prereq_validator.get_error_message()}", err=True)
+        raise typer.Exit(code=1)
+
+    # Validate project name
+    name_validator = ProjectNameValidator()
+    if not name_validator.validate(name):
+        typer.echo(f"Error: {name_validator.get_error_message()}", err=True)
+        raise typer.Exit(code=1)
+
+    # Validate project path
+    project_path = Path.cwd() / name
+    path_validator = ProjectPathValidator(file_ops)
+    if not path_validator.validate(project_path):
+        typer.echo(f"Error: {path_validator.get_error_message()}", err=True)
+        raise typer.Exit(code=1)
 
     # Determine structure
     if scale and basic:
