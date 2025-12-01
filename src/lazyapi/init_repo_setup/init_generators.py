@@ -1,7 +1,6 @@
 """FastAPI-specific content generators for repo-setup feature."""
 
-from typing import Dict, Any
-from ..shared.interfaces import IContentGenerator
+from ..shared.content_generators import TemplateContentGenerator, StaticContentGenerator
 
 
 # ============================================================================
@@ -9,21 +8,18 @@ from ..shared.interfaces import IContentGenerator
 # ============================================================================
 
 
-class BasicReadmeGenerator(IContentGenerator):
+class BasicReadmeGenerator(TemplateContentGenerator):
     """Generate README.md for basic FastAPI project."""
 
-    def generate(self, context: Dict[str, Any]) -> str:
-        """Generate README content."""
-        project_name = context.get("project_name", "my-api")
-        return f"# {project_name}\n\nA FastAPI project.\n"
+    def __init__(self):
+        super().__init__("# {project_name}\n\nA FastAPI project.\n")
 
 
-class BasicDockerfileGenerator(IContentGenerator):
+class BasicDockerfileGenerator(StaticContentGenerator):
     """Generate Dockerfile for basic FastAPI project."""
 
-    def generate(self, context: Dict[str, Any]) -> str:
-        """Generate Dockerfile content."""
-        return """FROM python:3.12-slim
+    def __init__(self):
+        super().__init__("""FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -33,16 +29,14 @@ RUN pip install uv && uv sync
 COPY src/ src/
 
 CMD ["uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
-"""
+""")
 
 
-class BasicDockerComposeGenerator(IContentGenerator):
+class BasicDockerComposeGenerator(TemplateContentGenerator):
     """Generate docker-compose.dev.yml for basic FastAPI project."""
 
-    def generate(self, context: Dict[str, Any]) -> str:
-        """Generate docker-compose content."""
-        project_name = context.get("project_name", "my-api")
-        return f"""services:
+    def __init__(self):
+        super().__init__("""services:
   api:
     build: .
     container_name: {project_name}
@@ -54,18 +48,17 @@ class BasicDockerComposeGenerator(IContentGenerator):
       - .env.example
     environment:
       - ENV=development
-"""
+""")
 
 
-class BasicEnvExampleGenerator(IContentGenerator):
+class BasicEnvExampleGenerator(StaticContentGenerator):
     """Generate .env.example for basic FastAPI project."""
 
-    def generate(self, context: Dict[str, Any]) -> str:
-        """Generate .env.example content."""
-        return """# Environment variables
+    def __init__(self):
+        super().__init__("""# Environment variables
 ENV=development
 LOG_LEVEL=info
-"""
+""")
 
 
 # ============================================================================
@@ -73,13 +66,11 @@ LOG_LEVEL=info
 # ============================================================================
 
 
-class ScaledReadmeGenerator(IContentGenerator):
+class ScaledReadmeGenerator(TemplateContentGenerator):
     """Generate README.md for scaled FastAPI project."""
 
-    def generate(self, context: Dict[str, Any]) -> str:
-        """Generate README content."""
-        project_name = context.get("project_name", "my-api")
-        return f"""# {project_name}
+    def __init__(self):
+        super().__init__("""# {project_name}
 
 A feature-based FastAPI project with scalable architecture.
 
@@ -100,15 +91,14 @@ cd {project_name}
 source .venv/bin/activate
 uvicorn src.main:app --reload
 ```
-"""
+""")
 
 
-class ScaledCoreConfigGenerator(IContentGenerator):
+class ScaledCoreConfigGenerator(StaticContentGenerator):
     """Generate core configuration module for scaled project."""
 
-    def generate(self, context: Dict[str, Any]) -> str:
-        """Generate core config."""
-        return '''"""Core configuration."""
+    def __init__(self):
+        super().__init__('''"""Core configuration."""
 
 from pydantic_settings import BaseSettings
 
@@ -124,16 +114,14 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-'''
+''')
 
 
-class ScaledMainAppGenerator(IContentGenerator):
+class ScaledMainAppGenerator(TemplateContentGenerator):
     """Generate main.py for scaled project."""
 
-    def generate(self, context: Dict[str, Any]) -> str:
-        """Generate main app."""
-        project_name = context.get("project_name", "my-api")
-        return f'''"""Main FastAPI application."""
+    def __init__(self):
+        super().__init__('''"""Main FastAPI application."""
 
 from fastapi import FastAPI
 from src.core.config import settings
@@ -154,15 +142,14 @@ def root():
 def health():
     """Health check endpoint."""
     return {{"status": "healthy"}}
-'''
+''')
 
 
-class ScaledDockerfileGenerator(IContentGenerator):
+class ScaledDockerfileGenerator(StaticContentGenerator):
     """Generate Dockerfile for scaled project."""
 
-    def generate(self, context: Dict[str, Any]) -> str:
-        """Generate Dockerfile."""
-        return """FROM python:3.12-slim
+    def __init__(self):
+        super().__init__("""FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -177,16 +164,14 @@ COPY src/ src/
 EXPOSE 8000
 
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
-"""
+""")
 
 
-class ScaledDockerComposeGenerator(IContentGenerator):
+class ScaledDockerComposeGenerator(TemplateContentGenerator):
     """Generate docker-compose for scaled project."""
 
-    def generate(self, context: Dict[str, Any]) -> str:
-        """Generate docker-compose."""
-        project_name = context.get("project_name", "my-api")
-        return f"""services:
+    def __init__(self):
+        super().__init__("""services:
   api:
     build: .
     container_name: {project_name}-api
@@ -199,4 +184,4 @@ class ScaledDockerComposeGenerator(IContentGenerator):
     environment:
       - DEBUG=true
       - LOG_LEVEL=info
-"""
+""")
