@@ -9,8 +9,9 @@ from .init_repo_setup import (
     ProjectNameValidator,
     ProjectPathValidator,
     PrerequisiteValidator,
-    get_fastapi_structure,
 )
+from .init_repo_setup.init_structure import get_fastapi_structure
+from .init_repo_setup.init_scaled_structure import get_scaled_fastapi_structure
 from .shared import LazyAPIError
 
 
@@ -28,7 +29,13 @@ def cli():
     prompt="Enter the repository name",
     help="Name of the FastAPI project to create",
 )
-def init(name: str):
+@click.option(
+    "--scale",
+    is_flag=True,
+    default=False,
+    help="Create a scaled, feature-based project structure",
+)
+def init(name: str, scale: bool):
     """Initialize a new FastAPI project structure."""
     # Create generic services (dependency injection)
     file_ops = FileOperations()
@@ -53,21 +60,27 @@ def init(name: str):
         click.echo(f"Error: {path_validator.get_error_message()}", err=True)
         raise click.Abort()
 
-    click.echo(f"Creating FastAPI project: {name}")
+    # Choose structure based on flag
+    structure_type = "scaled" if scale else "basic"
+    click.echo(f"Creating {structure_type} FastAPI project: {name}")
 
     try:
-        # Get feature-specific structure
-        structure = get_fastapi_structure()
+        # Get feature-specific structure based on flag
+        structure = get_scaled_fastapi_structure() if scale else get_fastapi_structure()
 
         # Initialize project using feature implementation
         initializer = ProjectInitializer(file_ops, shell_exec, structure)
         initializer.initialize(project_path, name)
 
-        click.echo(f"Successfully created project '{name}'")
+        click.echo(f"✓ Successfully created {structure_type} project '{name}'")
         click.echo("\nNext steps:")
         click.echo(f"  cd {name}")
         click.echo("  source .venv/bin/activate")
-        click.echo("  uvicorn src.app.main:app --reload")
+        
+        if scale:
+            click.echo("  uvicorn src.app.main:app --reload")
+        else:
+            click.echo("  uvicorn src.app.main:app --reload")
 
     except LazyAPIError as e:
         click.echo(f"Error: {e}", err=True)
