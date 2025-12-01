@@ -43,22 +43,19 @@ class ProjectInitializer:
             LazyAPIError: If initialization fails
         """
         try:
-            # Create root directory
             self._file_ops.create_directory(project_path)
 
-            # Create subdirectories
+            # Create all directories (write_file will create parent dirs as needed)
             for dir_spec in self._structure.directories:
-                dir_path = project_path / dir_spec.path
-                dir_path.mkdir(parents=True, exist_ok=True)
+                self._file_ops.create_directory(project_path / dir_spec.path)
 
-            # Generate and write files
+            # Generate and write all files
             context = {"project_name": project_name}
             for file_spec in self._structure.files:
-                file_path = project_path / file_spec.path
                 content = file_spec.generator.generate(context)
-                self._file_ops.write_file(file_path, content)
+                self._file_ops.write_file(project_path / file_spec.path, content)
 
-            # Execute commands
+            # Execute all commands
             for cmd_spec in self._structure.commands:
                 self._shell_exec.execute(cmd_spec.command, cwd=project_path)
 

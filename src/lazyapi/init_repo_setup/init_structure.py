@@ -34,10 +34,8 @@ def get_fastapi_structure() -> ProjectStructure:
             FileSpec(path="README.md", generator=BasicReadmeGenerator()),
         ],
         commands=[
-            CommandSpec(command=["git", "init"], description="Initialize git"),
-            CommandSpec(
-                command=["uv", "init", "--no-readme"], description="Initialize Python"
-            ),
-            CommandSpec(command=["uv", "sync"], description="Create virtualenv"),
+            CommandSpec(command=["git", "init"]),
+            CommandSpec(command=["uv", "init", "--no-readme"]),
+            CommandSpec(command=["uv", "sync"]),
         ],
     )
