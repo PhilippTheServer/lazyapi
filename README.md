@@ -77,12 +77,15 @@ cd my-awesome-api
 
 ```
 my-awesome-api/
-├── app/
-│   ├── __init__.py
-│   ├── main.py
-│   ├── routes.py
-│   └── models.py
+├── src/
+|   ├──app/
+│   |  ├── __init__.py
+│   |  ├── main.py
+│   |  ├── routes.py
+│   |  └── models.py
+│   └── Dockerfile
 ├── tests/
+├── docker-compose.dev.yml
 ├── .env.example
 ├── pyproject.toml
 └── README.md
@@ -93,16 +96,26 @@ my-awesome-api/
 ```
 my-awesome-api/
 ├── src/
-│   ├── features/
-│   │   └── __init__.py
-│   ├── core/
-│   │   ├── __init__.py
-│   │   ├── config.py
-│   │   └── database.py
-│   └── main.py
+│   ├── app/
+|   │   ├── shared/
+|   │   │   ├── __init__.py
+|   │   │   ├── config.py
+|   │   │   ├── logger.py
+|   │   │   └── database.py
+|   │   ├── services/
+|   │   │   ├── feature1/
+|   │   │   |   ├── feature1.py
+|   │   │   |   ├── models/
+|   │   │   |   ├── routers/
+|   │   │   |   ├── functions/
+|   │   │   |   └── services/
+|   │   │   └── feature2/
+|   │   └── main.py
+|   └── Dockerfile
 ├── tests/
 ├── .env.example
 ├── pyproject.toml
+├── docker-compose.dev.yml
 └── README.md
 ```
 
