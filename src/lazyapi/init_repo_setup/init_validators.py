@@ -23,7 +23,9 @@ class ProjectNameValidator(IValidator):
             self._error = "Project name too long (max 100 characters)"
             return False
         if not self._PATTERN.match(value):
-            self._error = "Project name must be lowercase alphanumeric with hyphens/underscores"
+            self._error = (
+                "Project name must be lowercase alphanumeric with hyphens/underscores"
+            )
             return False
         if value in self._RESERVED:
             self._error = f"'{value}' is a reserved name"

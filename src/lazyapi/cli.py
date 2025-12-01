@@ -51,34 +51,46 @@ def init(
 ):
     """
     Initialize a new FastAPI project structure.
-    
+
     Use --scale for a feature-based layout with shared utilities and services directory.
     Use --basic (or no flag) for a simple, compact project structure.
     """
     file_ops = FileOperations()
     shell_exec = ShellExecutor()
-    
+
     # Validate
     for validator in [
         PrerequisiteValidator(["git", "uv"]),
         ProjectNameValidator(),
         ProjectPathValidator(file_ops),
     ]:
-        if not validator.validate(name if isinstance(validator, ProjectNameValidator) else Path.cwd() / name if isinstance(validator, ProjectPathValidator) else None):
+        if not validator.validate(
+            name
+            if isinstance(validator, ProjectNameValidator)
+            else Path.cwd() / name
+            if isinstance(validator, ProjectPathValidator)
+            else None
+        ):
             typer.echo(f"Error: {validator.get_error_message()}", err=True)
             raise typer.Exit(code=1)
 
     # Determine structure
     if scale and basic:
-        typer.echo("Warning: Both --scale and --basic specified. Using --scale.", err=True)
+        typer.echo(
+            "Warning: Both --scale and --basic specified. Using --scale.", err=True
+        )
     use_scaled = scale or not basic
     structure_type = "scaled" if use_scaled else "basic"
     typer.echo(f"Creating {structure_type} FastAPI project: {name}")
 
     try:
-        structure = get_scaled_fastapi_structure() if use_scaled else get_fastapi_structure()
-        ProjectInitializer(file_ops, shell_exec, structure).initialize(Path.cwd() / name, name)
-        
+        structure = (
+            get_scaled_fastapi_structure() if use_scaled else get_fastapi_structure()
+        )
+        ProjectInitializer(file_ops, shell_exec, structure).initialize(
+            Path.cwd() / name, name
+        )
+
         typer.echo(f"✓ Successfully created {structure_type} project '{name}'")
         typer.echo("\nNext steps:")
         typer.echo(f"  cd {name}")

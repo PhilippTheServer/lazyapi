@@ -14,7 +14,7 @@ from .init_generators import (
 def get_scaled_fastapi_structure() -> ProjectStructure:
     """
     Define the scaled/feature-based FastAPI project structure.
-    
+
     This creates a more complex, production-ready structure.
     """
     empty_gen = EmptyFileGenerator()
