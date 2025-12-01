@@ -65,4 +65,4 @@ class ScaledMainAppGenerator(FileTemplateGenerator):
     """Generate main.py for scaled project."""
 
     def __init__(self):
-        super().__init__(Path("main.scaled.py"))
+        super().__init__(Path("main.py"))
