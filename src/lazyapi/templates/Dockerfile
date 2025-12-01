@@ -25,7 +25,7 @@ COPY --from=uv-base /usr/local/bin/uv /usr/local/bin/uv
 
 # Create a dedicated virtualenv for runtime deps
 RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:${PATH}"
+ENV PATH="/opt/venv/bin:${{PATH}}"
 
 WORKDIR /build
 
@@ -43,7 +43,7 @@ FROM python:3.12-slim AS runtime
 
 # Copy the prebuilt venv from the deps stage
 COPY --from=deps /opt/venv /opt/venv
-ENV PATH="/opt/venv/bin:${PATH}"
+ENV PATH="/opt/venv/bin:${{PATH}}"
 
 WORKDIR /code
 
