@@ -63,7 +63,7 @@ def init(name: str):
         initializer = ProjectInitializer(file_ops, shell_exec, structure)
         initializer.initialize(project_path, name)
 
-        click.echo(f"✓ Successfully created project '{name}'")
+        click.echo(f"Successfully created project '{name}'")
         click.echo("\nNext steps:")
         click.echo(f"  cd {name}")
         click.echo("  source .venv/bin/activate")
