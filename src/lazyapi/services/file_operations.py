@@ -24,9 +24,7 @@ class FileOperations(IFileOperations):
             FileSystemError: If creation fails
         """
         try:
-            path.mkdir(parents=parents, exist_ok=False)
-        except FileExistsError as e:
-            raise FileSystemError(f"Directory already exists: {path}") from e
+            path.mkdir(parents=parents, exist_ok=True)
         except PermissionError as e:
             raise FileSystemError(f"Permission denied: {path}") from e
         except OSError as e:

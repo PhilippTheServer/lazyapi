@@ -53,31 +53,15 @@ def get_scaled_fastapi_structure() -> ProjectStructure:
             FileSpec(path="tests/__init__.py", generator=empty_gen),
         ],
         commands=[
-            CommandSpec(command=["git", "init"], description="Initialize git"),
-            CommandSpec(
-                command=["uv", "init", "--no-readme"], description="Initialize Python"
-            ),
-            CommandSpec(
-                command=["rm", "-f", "main.py"], description="Remove uv's auto-generated main.py"
-            ),
-            CommandSpec(
-                command=["uv", "add", "fastapi"], description="Add FastAPI"
-            ),
-            CommandSpec(
-                command=["uv", "add", "uvicorn[standard]"], description="Add Uvicorn"
-            ),
-            CommandSpec(
-                command=["uv", "add", "pydantic-settings"], description="Add Pydantic settings"
-            ),
-            CommandSpec(
-                command=["uv", "add", "sqlalchemy"], description="Add SQLAlchemy"
-            ),
-            CommandSpec(
-                command=["uv", "add", "alembic"], description="Add Alembic"
-            ),
-            CommandSpec(
-                command=["uv", "add", "python-dotenv"], description="Add dotenv"
-            ),
-            CommandSpec(command=["uv", "sync"], description="Sync dependencies"),
+            CommandSpec(command=["git", "init"]),
+            CommandSpec(command=["uv", "init", "--no-readme"]),
+            CommandSpec(command=["rm", "-f", "main.py"]),
+            CommandSpec(command=["uv", "add", "fastapi"]),
+            CommandSpec(command=["uv", "add", "uvicorn[standard]"]),
+            CommandSpec(command=["uv", "add", "pydantic-settings"]),
+            CommandSpec(command=["uv", "add", "sqlalchemy"]),
+            CommandSpec(command=["uv", "add", "alembic"]),
+            CommandSpec(command=["uv", "add", "python-dotenv"]),
+            CommandSpec(command=["uv", "sync"]),
         ],
     )

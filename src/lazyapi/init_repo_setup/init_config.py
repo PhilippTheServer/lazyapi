@@ -25,7 +25,6 @@ class CommandSpec:
     """Specification for a command to execute."""
 
     command: List[str]
-    description: str
 
 
 @dataclass
