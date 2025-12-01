@@ -130,13 +130,16 @@ LazyAPI supports two main project layouts:
 #### Small Project Layout
 
 ```
-my-project/
-├── app/
-│   ├── __init__.py
-│   ├── main.py
-│   ├── routes.py
-│   └── models.py
+my-awesome-api/
+├── src/
+|   ├──app/
+│   |  ├── __init__.py
+│   |  ├── main.py
+│   |  ├── routes.py
+│   |  └── models.py
+│   └── Dockerfile
 ├── tests/
+├── docker-compose.dev.yml
 ├── .env.example
 ├── pyproject.toml
 └── README.md
@@ -145,28 +148,28 @@ my-project/
 #### Feature-Based Layout
 
 ```
-my-project/
+my-awesome-api/
 ├── src/
-│   ├── features/
-│   │   ├── users/
-│   │   │   ├── __init__.py
-│   │   │   ├── router.py
-│   │   │   ├── service.py
-│   │   │   ├── models.py
-│   │   │   └── schemas.py
-│   │   └── auth/
-│   │       ├── __init__.py
-│   │       ├── router.py
-│   │       ├── service.py
-│   │       └── models.py
-│   ├── core/
-│   │   ├── __init__.py
-│   │   ├── config.py
-│   │   └── database.py
-│   └── main.py
+│   ├── app/
+|   │   ├── shared/
+|   │   │   ├── __init__.py
+|   │   │   ├── config.py
+|   │   │   ├── logger.py
+|   │   │   └── database.py
+|   │   ├── services/
+|   │   │   ├── feature1/
+|   │   │   |   ├── feature1.py
+|   │   │   |   ├── models/
+|   │   │   |   ├── routers/
+|   │   │   |   ├── functions/
+|   │   │   |   └── services/
+|   │   │   └── feature2/
+|   │   └── main.py
+|   └── Dockerfile
 ├── tests/
 ├── .env.example
 ├── pyproject.toml
+├── docker-compose.dev.yml
 └── README.md
 ```
 
