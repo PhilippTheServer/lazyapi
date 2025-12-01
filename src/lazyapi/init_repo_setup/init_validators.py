@@ -2,6 +2,7 @@
 
 import re
 import shutil
+from pathlib import Path
 from typing import Any
 from ..shared.interfaces import IValidator, IFileOperations
 
@@ -9,43 +10,28 @@ from ..shared.interfaces import IValidator, IFileOperations
 class ProjectNameValidator(IValidator):
     """Validate FastAPI project names."""
 
-    PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]*[a-z0-9]$|^[a-z0-9]$")
-
-    def __init__(self):
-        self._error_message = ""
+    _PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]*[a-z0-9]$|^[a-z0-9]$")
+    _RESERVED = {".", "..", "test", "src", "lib"}
+    _error = ""
 
     def validate(self, value: Any) -> bool:
         """Validate project name."""
-        if not isinstance(value, str):
-            self._error_message = "Project name must be a string"
+        if not isinstance(value, str) or not value:
+            self._error = "Project name must be a non-empty string"
             return False
-
-        if not value:
-            self._error_message = "Project name cannot be empty"
-            return False
-
         if len(value) > 100:
-            self._error_message = "Project name too long (max 100 characters)"
+            self._error = "Project name too long (max 100 characters)"
             return False
-
-        if not self.PATTERN.match(value):
-            self._error_message = (
-                "Project name must start and end with alphanumeric characters "
-                "and contain only lowercase letters, numbers, hyphens, and underscores"
-            )
+        if not self._PATTERN.match(value):
+            self._error = "Project name must be lowercase alphanumeric with hyphens/underscores"
             return False
-
-        reserved = {".", "..", "test", "src", "lib"}
-        if value in reserved:
-            self._error_message = f"'{value}' is a reserved name"
+        if value in self._RESERVED:
+            self._error = f"'{value}' is a reserved name"
             return False
-
-        self._error_message = ""
         return True
 
     def get_error_message(self) -> str:
-        """Get error message."""
-        return self._error_message
+        return self._error
 
 
 class ProjectPathValidator(IValidator):
@@ -53,55 +39,36 @@ class ProjectPathValidator(IValidator):
 
     def __init__(self, file_ops: IFileOperations):
         self._file_ops = file_ops
-        self._error_message = ""
+        self._error = ""
 
     def validate(self, value: Any) -> bool:
         """Validate project path."""
-        from pathlib import Path
-
         if not isinstance(value, (str, Path)):
-            self._error_message = "Path must be a string or Path object"
+            self._error = "Path must be a string or Path object"
             return False
-
-        path = Path(value)
-
-        if self._file_ops.directory_exists(path):
-            self._error_message = f"Directory '{path.name}' already exists"
+        if self._file_ops.directory_exists(Path(value)):
+            self._error = f"Directory '{Path(value).name}' already exists"
             return False
-
-        self._error_message = ""
         return True
 
     def get_error_message(self) -> str:
-        """Get error message."""
-        return self._error_message
+        return self._error
 
 
 class PrerequisiteValidator(IValidator):
     """Validate required tools are installed."""
 
     def __init__(self, required_commands: list[str]):
-        self._required_commands = required_commands
-        self._error_message = ""
+        self._required = required_commands
+        self._error = ""
 
     def validate(self, value: Any = None) -> bool:
         """Validate prerequisites are installed."""
-        missing = []
-
-        for command in self._required_commands:
-            if not shutil.which(command):
-                missing.append(command)
-
+        missing = [cmd for cmd in self._required if not shutil.which(cmd)]
         if missing:
-            self._error_message = (
-                f"Required tools not found: {', '.join(missing)}. "
-                "Please install them before continuing."
-            )
+            self._error = f"Required tools not found: {', '.join(missing)}"
             return False
-
-        self._error_message = ""
         return True
 
     def get_error_message(self) -> str:
-        """Get error message."""
-        return self._error_message
+        return self._error

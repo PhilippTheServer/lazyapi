@@ -55,46 +55,30 @@ def init(
     Use --scale for a feature-based layout with shared utilities and services directory.
     Use --basic (or no flag) for a simple, compact project structure.
     """
-    # Create generic services (dependency injection)
     file_ops = FileOperations()
     shell_exec = ShellExecutor()
+    
+    # Validate
+    for validator in [
+        PrerequisiteValidator(["git", "uv"]),
+        ProjectNameValidator(),
+        ProjectPathValidator(file_ops),
+    ]:
+        if not validator.validate(name if isinstance(validator, ProjectNameValidator) else Path.cwd() / name if isinstance(validator, ProjectPathValidator) else None):
+            typer.echo(f"Error: {validator.get_error_message()}", err=True)
+            raise typer.Exit(code=1)
 
-    # Validate prerequisites
-    prereq_validator = PrerequisiteValidator(["git", "uv"])
-    if not prereq_validator.validate():
-        typer.echo(f"Error: {prereq_validator.get_error_message()}", err=True)
-        raise typer.Exit(code=1)
-
-    # Validate project name
-    name_validator = ProjectNameValidator()
-    if not name_validator.validate(name):
-        typer.echo(f"Error: {name_validator.get_error_message()}", err=True)
-        raise typer.Exit(code=1)
-
-    # Validate project path
-    project_path = Path.cwd() / name
-    path_validator = ProjectPathValidator(file_ops)
-    if not path_validator.validate(project_path):
-        typer.echo(f"Error: {path_validator.get_error_message()}", err=True)
-        raise typer.Exit(code=1)
-
-    # Determine structure type (--scale takes precedence)
-    use_scaled = scale or not basic
+    # Determine structure
     if scale and basic:
         typer.echo("Warning: Both --scale and --basic specified. Using --scale.", err=True)
-        use_scaled = True
-    
+    use_scaled = scale or not basic
     structure_type = "scaled" if use_scaled else "basic"
     typer.echo(f"Creating {structure_type} FastAPI project: {name}")
 
     try:
-        # Get feature-specific structure based on flag
         structure = get_scaled_fastapi_structure() if use_scaled else get_fastapi_structure()
-
-        # Initialize project using feature implementation
-        initializer = ProjectInitializer(file_ops, shell_exec, structure)
-        initializer.initialize(project_path, name)
-
+        ProjectInitializer(file_ops, shell_exec, structure).initialize(Path.cwd() / name, name)
+        
         typer.echo(f"✓ Successfully created {structure_type} project '{name}'")
         typer.echo("\nNext steps:")
         typer.echo(f"  cd {name}")
