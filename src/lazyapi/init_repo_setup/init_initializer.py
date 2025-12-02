@@ -54,7 +54,7 @@ class ProjectInitializer:
 
             # Generate and write all files
             context = {
-                "service_name": project_name,
+                "project_name": project_name,
                 "is_scaled": is_scaled,
             }
             for file_spec in self._structure.files:

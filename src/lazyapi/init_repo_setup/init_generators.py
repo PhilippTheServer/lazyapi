@@ -13,14 +13,14 @@ class DockerfileGenerator(FileTemplateGenerator):
     """Generate Dockerfile for FastAPI project."""
 
     def __init__(self):
-        super().__init__(Path("Dockerfile"))
+        super().__init__(Path("docker/Dockerfile"))
 
 
 class DockerComposeGenerator(FileTemplateGenerator):
     """Generate docker-compose.dev.yml for FastAPI project."""
 
     def __init__(self):
-        super().__init__(Path("docker-compose.dev.yml"))
+        super().__init__(Path("docker/docker-compose.dev.yml"))
 
 
 class EnvExampleGenerator(FileTemplateGenerator):

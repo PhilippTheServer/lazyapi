@@ -7,7 +7,7 @@ log = init_logger()
 
 
 app = FastAPI(
-    title="{service_name}",
+    title="{project_name}",
     description="",
     version="0.0.1",
 )
