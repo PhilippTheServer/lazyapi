@@ -8,6 +8,7 @@ from .init_generators import (
     DockerComposeGenerator,
     EnvExampleGenerator,
     MainAppGenerator,
+    CoreConfigGenerator,
 )
 
 
@@ -29,6 +30,7 @@ def get_fastapi_structure() -> ProjectStructure:
             FileSpec(path="src/app/main.py", generator=MainAppGenerator),
             FileSpec(path="src/app/routes.py", generator=empty_gen),
             FileSpec(path="src/app/models.py", generator=empty_gen),
+            FileSpec(path="src/app/config.py", generator=CoreConfigGenerator()),
             FileSpec(path="src/Dockerfile", generator=DockerfileGenerator()),
             FileSpec(path="docker-compose.dev.yml", generator=DockerComposeGenerator()),
             FileSpec(path=".env.example", generator=EnvExampleGenerator()),

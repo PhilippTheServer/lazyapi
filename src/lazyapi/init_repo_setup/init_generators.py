@@ -44,12 +44,7 @@ class MainAppGenerator(FileTemplateGenerator):
         super().__init__(Path("main.py"))
 
 
-# ============================================================================
-# Scaled Structure Generators
-# ============================================================================
-
-
-class ScaledCoreConfigGenerator(FileTemplateGenerator):
+class CoreConfigGenerator(FileTemplateGenerator):
     """Generate core configuration module for scaled project."""
 
     def __init__(self):
