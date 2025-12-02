@@ -29,17 +29,17 @@ class EnvExampleGenerator(FileTemplateGenerator):
     def __init__(self):
         super().__init__(Path(".env.example"))
 
-
-# ============================================================================
-# Basic Structure Generators
-# ============================================================================
-
-
-class BasicReadmeGenerator(FileTemplateGenerator):
-    """Generate README.md for basic FastAPI project."""
+class ReadmeGenerator(FileTemplateGenerator):
+    """Generate Readme for FastAPI project."""
 
     def __init__(self):
-        super().__init__(Path("README.basic.md"))
+        super().__init__(Path("README.md"))
+
+class MainAppGenerator(FileTemplateGenerator):
+    """Generate main.py for scaled project."""
+
+    def __init__(self):
+        super().__init__(Path("main.py"))
 
 
 # ============================================================================
@@ -47,22 +47,8 @@ class BasicReadmeGenerator(FileTemplateGenerator):
 # ============================================================================
 
 
-class ScaledReadmeGenerator(FileTemplateGenerator):
-    """Generate README.md for scaled FastAPI project."""
-
-    def __init__(self):
-        super().__init__(Path("README.scaled.md"))
-
-
 class ScaledCoreConfigGenerator(FileTemplateGenerator):
     """Generate core configuration module for scaled project."""
 
     def __init__(self):
         super().__init__(Path("core_config.py"))
-
-
-class ScaledMainAppGenerator(FileTemplateGenerator):
-    """Generate main.py for scaled project."""
-
-    def __init__(self):
-        super().__init__(Path("main.py"))

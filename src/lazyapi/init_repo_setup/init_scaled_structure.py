@@ -3,9 +3,9 @@
 from .init_config import ProjectStructure, DirectorySpec, FileSpec, CommandSpec
 from ..shared.content_generators import EmptyFileGenerator
 from .init_generators import (
-    ScaledReadmeGenerator,
+    ReadmeGenerator,
     ScaledCoreConfigGenerator,
-    ScaledMainAppGenerator,
+    MainAppGenerator,
     DockerfileGenerator,
     DockerComposeGenerator,
     EnvExampleGenerator,
@@ -33,7 +33,7 @@ def get_scaled_fastapi_structure() -> ProjectStructure:
         ],
         files=[
             # Root level
-            FileSpec(path="README.md", generator=ScaledReadmeGenerator()),
+            FileSpec(path="README.md", generator=ReadmeGenerator()),
             FileSpec(path="docker-compose.dev.yml", generator=DockerComposeGenerator()),
             FileSpec(path=".env.example", generator=EnvExampleGenerator()),
             FileSpec(path=".gitignore", generator=empty_gen),
@@ -41,7 +41,7 @@ def get_scaled_fastapi_structure() -> ProjectStructure:
             FileSpec(path="src/Dockerfile", generator=DockerfileGenerator()),
             # App
             FileSpec(path="src/app/__init__.py", generator=empty_gen),
-            FileSpec(path="src/app/main.py", generator=ScaledMainAppGenerator()),
+            FileSpec(path="src/app/main.py", generator=MainAppGenerator()),
             FileSpec(path="src/app/config.py", generator=ScaledCoreConfigGenerator()),
             # Shared utilities
             FileSpec(path="src/app/shared/__init__.py", generator=empty_gen),

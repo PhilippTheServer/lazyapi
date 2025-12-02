@@ -54,7 +54,6 @@ class ProjectInitializer:
 
             # Generate and write all files
             context = {
-                "project_name": project_name,
                 "service_name": project_name,
                 "is_scaled": is_scaled,
             }
