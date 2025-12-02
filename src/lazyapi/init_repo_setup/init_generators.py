@@ -29,11 +29,13 @@ class EnvExampleGenerator(FileTemplateGenerator):
     def __init__(self):
         super().__init__(Path(".env.example"))
 
+
 class ReadmeGenerator(FileTemplateGenerator):
     """Generate Readme for FastAPI project."""
 
     def __init__(self):
         super().__init__(Path("README.md"))
+
 
 class MainAppGenerator(FileTemplateGenerator):
     """Generate main.py for scaled project."""
